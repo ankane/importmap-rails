@@ -44,6 +44,8 @@ module Importmap
     initializer "importmap.assets" do |app|
       if app.config.respond_to?(:assets)
         app.config.assets.precompile += %w( es-module-shims.js es-module-shims.min.js es-module-shims.js.map )
+        # TODO handle source maps
+        app.config.assets.precompile += Rails.application.importmap.send(:expanded_packages_and_directories).map { |_, v| v.path }
         app.config.assets.paths << Rails.root.join("app/javascript")
         app.config.assets.paths << Rails.root.join("vendor/javascript")
       end
